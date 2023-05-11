@@ -7,7 +7,7 @@ function Home() {
       <section className="flex flex-col gap-6">
         <Text variant="h1">ChatGPT-style Chat Bot with Memory</Text>
         <Text className="text-zinc-600">
-          Each user session has their own persistent memory.
+          Cada usuario tiene su propia memoria persistente.
         </Text>
       </section>
 

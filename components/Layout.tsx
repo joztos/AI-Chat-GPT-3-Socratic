@@ -4,7 +4,9 @@ import Nav, { NavProps } from './Nav'
 import Logo from './Steamship'
 import { ComponentType } from 'react'
 
-export interface LayoutProps extends NavProps {
+// Remove deployButton from LayoutProps
+export interface LayoutProps {
+  path: string;
   children?: ReactNode
   title?: string
   description?: string
@@ -14,7 +16,6 @@ const Layout: FC<LayoutProps> = ({
   title,
   description,
   path,
-  deployButton,
   children,
 }) => {
   return (
@@ -25,7 +26,8 @@ const Layout: FC<LayoutProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Nav path={path} deployButton={deployButton} />
+      {/* Remove deployButton from Nav */}
+      <Nav path={path} />
 
       <div className="px-8 bg-accents-0">{children}</div>
 
@@ -60,10 +62,12 @@ export default Layout
 
 const Noop: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>
 
-export interface LayoutProps extends NavProps {
-    children?: ReactNode;
-    title?: string;
-    description?: string;
+// Remove deployButton from LayoutProps again
+export interface LayoutProps {
+  path: string;
+  children?: ReactNode;
+  title?: string;
+  description?: string;
 }
 
 export function getLayout<LP extends {}>(

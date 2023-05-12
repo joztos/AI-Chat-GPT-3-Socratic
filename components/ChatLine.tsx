@@ -16,7 +16,7 @@ export const LoadingChatLine = () => (
       <div className="min-w-0 flex-1">
         <p className="font-large text-xxl text-gray-900">
           <a href="#" className="hover:underline">
-            AI
+            NAVI AI
           </a>
         </p>
         <div className="space-y-4 pt-4">

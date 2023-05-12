@@ -40,15 +40,15 @@ const Layout: FC<LayoutProps> = ({
         >
           <Logo
             className="inline-block h-6 ml-3 text-primary"
-          /> Steamship
-        </a>. Based on the
+          /> Samasat
+        </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"
           target="_blank"
           rel="noreferrer"
           className="text-black ml-1 mr-1"
-        > the ai-gpt3-chatbot
-        </a> template.
+        > by gpt3
+        </a> .
 
       </footer>
     </div>

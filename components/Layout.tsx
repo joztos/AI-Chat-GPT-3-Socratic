@@ -33,18 +33,18 @@ const Layout: FC<LayoutProps> = ({
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
         <span className="text-primary">Created by</span>
         <a
-          href="https://samasat.com"
-          aria-label="Samasat.com Link"
+          href="https://www.emdischool.com/"
+          aria-label="EMDISchool.com Link"
           target="_blank"
           rel="noreferrer"
           className="text-black "
         >
           <img 
-            src="https://samasat.com/wp-content/uploads/2022/01/Disen%CC%83o-sin-ti%CC%81tulo.png" 
-            alt="Samasat logo" 
+            src="https://i.im.ge/2023/04/11/IBXuyY.EMDILOGO.png" 
+            alt="EMDI School logo" 
             className="inline-block h-8 w-16 ml-3 text-primary"
           />
-          Samasat
+          EMDI School
         </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"

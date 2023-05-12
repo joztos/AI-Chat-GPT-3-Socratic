@@ -9,9 +9,6 @@ export interface NavProps {
 }
 
 export default function Nav({ path }: NavProps) {
-  const displayPath = ['Vercel Examples']
-    .concat(path?.split('/').filter(Boolean) || [])
-    .join(' / ')
   const repositoryUrl = `${REPO_URL}/${path}`
 
   return (
@@ -36,16 +33,6 @@ export default function Nav({ path }: NavProps) {
               >
                 <path d="M16.88 3.549L7.12 20.451"></path>
               </svg>
-            </li>
-            <li className="font-medium" style={{ letterSpacing: '.01px' }}>
-              <Link
-                href={repositoryUrl}
-                className="text-accents-6 no-underline transition-colors duration-200 hover:text-accents-8 cursor-pointer"
-                target="_blank"
-                rel="noreferrer"
-              >
-                {displayPath}
-              </Link>
             </li>
           </ul>
         </div>

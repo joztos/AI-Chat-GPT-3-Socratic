@@ -1,6 +1,5 @@
 import Link from '@vercel/examples-ui/link'
 import { Layout, Text, Page } from '@vercel/examples-ui'
-import Logo from './Steamship'
 
 const REPO_URL = 'https://github.com/steamship-core/vercel-examples/tree/main'
 
@@ -15,8 +14,8 @@ export default function Nav({ path }: NavProps) {
     <nav className="border-b border-gray-200 py-5 relative z-20 bg-background shadow-[0_0_15px_0_rgb(0,0,0,0.1)]">
       <div className="flex items-center lg:px-6 px-8 mx-auto max-w-7xl px-14">
         <div className="flex flex-row items-center">
-          <Link href="https://www.steamship.com/">
-            <Logo className={`w-8 h-8 text-black`} ></Logo>
+          <Link href="https://www.samasat.com/">
+            <img src="https://samasat.com/wp-content/uploads/2022/01/Disen%CC%83o-sin-ti%CC%81tulo.png" alt="Samasat logo" className="w-8 h-8"/>
           </Link>
           <ul className="flex items-center content-center">
             <li className="ml-2 text-gray-200">

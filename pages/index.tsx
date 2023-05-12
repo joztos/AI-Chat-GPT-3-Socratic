@@ -7,7 +7,7 @@ function Home() {
       <section className="flex flex-col gap-6">
         <Text variant="h1">Navi Tutor Socratico</Text>
         <Text className="text-zinc-600">
-          Cada usuario tiene su propia memoria persistente.
+          Libera tu genio interno.
         </Text>
       </section>
 

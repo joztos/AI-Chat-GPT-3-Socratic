@@ -1,7 +1,6 @@
 import type { FC, ReactNode } from 'react'
 import Head from 'next/head.js'
 import Nav, { NavProps } from './Nav'
-import Logo from './Steamship'
 import { ComponentType } from 'react'
 
 // Remove deployButton from LayoutProps
@@ -34,15 +33,18 @@ const Layout: FC<LayoutProps> = ({
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
         <span className="text-primary">Created by</span>
         <a
-          href="https://steamship.com"
-          aria-label="Steamship.com Link"
+          href="https://samasat.com"
+          aria-label="Samasat.com Link"
           target="_blank"
           rel="noreferrer"
           className="text-black "
         >
-          <Logo
-            className="inline-block h-6 ml-3 text-primary"
-          /> Samasat
+          <img 
+            src="https://samasat.com/wp-content/uploads/2022/01/Disen%CC%83o-sin-ti%CC%81tulo.png" 
+            alt="Samasat logo" 
+            className="inline-block h-8 w-16 ml-3 text-primary"
+          />
+          Samasat
         </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"
@@ -51,14 +53,12 @@ const Layout: FC<LayoutProps> = ({
           className="text-black ml-1 mr-1"
         > by gpt3
         </a> .
-
       </footer>
     </div>
   )
 }
 
 export default Layout
-
 
 const Noop: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>
 

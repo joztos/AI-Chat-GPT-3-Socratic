@@ -15,7 +15,7 @@ export default function Nav({ path }: NavProps) {
       <div className="flex items-center lg:px-6 px-8 mx-auto max-w-7xl px-14">
         <div className="flex flex-row items-center">
           <Link href="https://www.samasat.com/">
-            <img src="https://samasat.com/wp-content/uploads/2022/01/Disen%CC%83o-sin-ti%CC%81tulo.png" alt="Samasat logo" className="w-8 h-8"/>
+            <img src="https://samasat.com/wp-content/uploads/2022/01/Disen%CC%83o-sin-ti%CC%81tulo.png" alt="Samasat logo" className="16 h-8"/>
           </Link>
           <ul className="flex items-center content-center">
             <li className="ml-2 text-gray-200">

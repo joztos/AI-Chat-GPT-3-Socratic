@@ -4,8 +4,6 @@
 
 This example shows how to implement a persistent chat bot using Next.js, API Routes, [OpenAI](https://beta.openai.com/docs/api-reference/completions/create), and [Steamship](https://www.steamship.com).
 
-![Screen Shot](https://steamship.com/data/templates/langchain-on-vercel/chatbot-card.png)
-
 ### Components
 
 - Next.js

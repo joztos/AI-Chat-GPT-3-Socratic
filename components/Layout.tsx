@@ -1,3 +1,13 @@
+import type { FC, ReactNode } from 'react'
+import { ComponentType } from 'react'
+
+export interface LayoutProps {
+  path: string;
+  children?: ReactNode
+  title?: string
+  description?: string
+}
+
 const Layout: FC<LayoutProps> = ({
   title,
   description,
@@ -6,15 +16,6 @@ const Layout: FC<LayoutProps> = ({
 }) => {
   return (
     <div className="mx-auto h-screen flex flex-col">
-      <Head>
-        {title && <title>{`${title} - Steamship + Vercel Examples`}</title>}
-        {description && <meta name="description" content={description} />}
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      {/* Remove deployButton from Nav */}
-      <Nav path={path} />
-
       <div className="px-8 bg-accents-0">{children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
@@ -42,3 +43,18 @@ const Layout: FC<LayoutProps> = ({
 }
 
 export default Layout
+
+const Noop: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>
+
+export interface LayoutProps {
+  path: string;
+  children?: ReactNode;
+  title?: string;
+  description?: string;
+}
+
+export function getLayout<LP extends {}>(
+  Component: ComponentType<any>
+): ComponentType<LP> {
+  return (Component as any).Layout || Noop
+}

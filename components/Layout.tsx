@@ -37,7 +37,7 @@ const Layout: FC<LayoutProps> = ({
           rel="noreferrer"
           className="text-black "
         >
-          <strong>EMDI school</strong>
+          <strong> EMDI school</strong>
         </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"

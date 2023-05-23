@@ -1,10 +1,6 @@
 # AI Chat GPT-3 with Persistence using LangChain and Steamship
 
-[![Steamship](https://raw.githubusercontent.com/steamship-core/python-client/main/badge.svg)](https://www.steamship.com/build/langchain-on-vercel?utm_source=github&utm_medium=badge&utm_campaign=github_repo&utm_id=github_vercel_repo_ai_chatgpt)
-
 This example shows how to implement a persistent chat bot using Next.js, API Routes, [OpenAI](https://beta.openai.com/docs/api-reference/completions/create), and [Steamship](https://www.steamship.com).
-
-![Screen Shot](https://steamship.com/data/templates/langchain-on-vercel/chatbot-card.png)
 
 ### Components
 

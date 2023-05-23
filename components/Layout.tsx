@@ -1,13 +1,3 @@
-import type { FC, ReactNode } from 'react'
-import { ComponentType } from 'react'
-
-export interface LayoutProps {
-  path: string;
-  children?: ReactNode
-  title?: string
-  description?: string
-}
-
 const Layout: FC<LayoutProps> = ({
   title,
   description,
@@ -19,7 +9,7 @@ const Layout: FC<LayoutProps> = ({
       <div className="px-8 bg-accents-0">{children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
-        <span className="text-primary">Created by Samasat Group for EMDI school </span>
+        <span className="text-primary">Created by Samasat Group for <strong>EMDI</strong> school </span>
         <a
           href="https://www.emdischool.com/"
           aria-label="EMDISchool.com Link"
@@ -34,7 +24,7 @@ const Layout: FC<LayoutProps> = ({
           target="_blank"
           rel="noreferrer"
           className="text-black ml-1 mr-1"
-        > via Navi AI.
+        > via <strong>Navi AI</strong>.
         </a> .
       </footer>
     </div>

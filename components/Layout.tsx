@@ -19,8 +19,7 @@ const Layout: FC<LayoutProps> = ({
       <div className="px-8 bg-accents-0">{children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
-        <span className="text-primary">Created by Samasat Group for EMDI school 
- Powered</span>
+        <span className="text-primary">Created by Samasat Group for EMDI school </span>
         <a
           href="https://www.emdischool.com/"
           aria-label="EMDISchool.com Link"
@@ -28,7 +27,7 @@ const Layout: FC<LayoutProps> = ({
           rel="noreferrer"
           className="text-black "
         >
-          EMDI School
+          
         </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"

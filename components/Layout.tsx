@@ -20,15 +20,7 @@ const Layout: FC<LayoutProps> = ({
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
         <span className="text-primary">Created by Samasat Group for <strong>EMDI</strong> school 
- Powered</span>
-        <a
-          href="https://www.emdischool.com/"
-          aria-label="EMDISchool.com Link"
-          target="_blank"
-          rel="noreferrer"
-          className="text-black "
-        >
-          <strong>EMDI</strong> School
+ 
         </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"

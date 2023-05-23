@@ -1,12 +1,6 @@
-import type { FC, ReactNode } from 'react'
-import { ComponentType } from 'react'
-
-export interface LayoutProps {
-  path: string;
-  children?: ReactNode
-}
-
 const Layout: FC<LayoutProps> = ({
+  title,
+  description,
   path,
   children,
 }) => {
@@ -23,6 +17,7 @@ const Layout: FC<LayoutProps> = ({
           rel="noreferrer"
           className="text-black "
         >
+          
         </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"
@@ -39,6 +34,13 @@ const Layout: FC<LayoutProps> = ({
 export default Layout
 
 const Noop: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>
+
+export interface LayoutProps {
+  path: string;
+  children?: ReactNode;
+  title?: string;
+  description?: string;
+}
 
 export function getLayout<LP extends {}>(
   Component: ComponentType<any>

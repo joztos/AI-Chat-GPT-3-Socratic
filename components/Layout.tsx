@@ -19,7 +19,7 @@ const Layout: FC<LayoutProps> = ({
       <div className="px-8 bg-accents-0">{children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
-        <span className="text-primary">Created by Samasat Group for EMDI school 
+        <span className="text-primary">Created by Samasat Group for <strong>EMDI</strong> school 
  Powered</span>
         <a
           href="https://www.emdischool.com/"
@@ -28,14 +28,14 @@ const Layout: FC<LayoutProps> = ({
           rel="noreferrer"
           className="text-black "
         >
-          EMDI School
+          <strong>EMDI</strong> School
         </a>. Powered
         <a
           href="https://vercel.com/templates/next.js/ai-gpt3-chatbot"
           target="_blank"
           rel="noreferrer"
           className="text-black ml-1 mr-1"
-        > via Navi AI.
+        > via <strong>Navi AI</strong>.
         </a> .
       </footer>
     </div>
@@ -45,13 +45,6 @@ const Layout: FC<LayoutProps> = ({
 export default Layout
 
 const Noop: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>
-
-export interface LayoutProps {
-  path: string;
-  children?: ReactNode;
-  title?: string;
-  description?: string;
-}
 
 export function getLayout<LP extends {}>(
   Component: ComponentType<any>

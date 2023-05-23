@@ -1,16 +1,3 @@
-import type { FC, ReactNode } from 'react'
-import Head from 'next/head.js'
-import Nav, { NavProps } from './Nav'
-import { ComponentType } from 'react'
-
-// Remove deployButton from LayoutProps
-export interface LayoutProps {
-  path: string;
-  children?: ReactNode
-  title?: string
-  description?: string
-}
-
 const Layout: FC<LayoutProps> = ({
   title,
   description,
@@ -31,7 +18,8 @@ const Layout: FC<LayoutProps> = ({
       <div className="px-8 bg-accents-0">{children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
-        <span className="text-primary">Created by</span>
+        <span className="text-primary">Created by Samasat Group for EMDI school 
+ Powered</span>
         <a
           href="https://www.emdischool.com/"
           aria-label="EMDISchool.com Link"
@@ -39,11 +27,6 @@ const Layout: FC<LayoutProps> = ({
           rel="noreferrer"
           className="text-black "
         >
-          <img 
-            src="https://i.im.ge/2023/04/11/IBXuyY.EMDILOGO.png" 
-            alt="EMDI School logo" 
-            className="inline-block h-8 w-16 ml-3 text-primary"
-          />
           EMDI School
         </a>. Powered
         <a
@@ -51,7 +34,7 @@ const Layout: FC<LayoutProps> = ({
           target="_blank"
           rel="noreferrer"
           className="text-black ml-1 mr-1"
-        > by gpt3
+        > via Navi AI.
         </a> .
       </footer>
     </div>
@@ -59,19 +42,3 @@ const Layout: FC<LayoutProps> = ({
 }
 
 export default Layout
-
-const Noop: FC<{ children?: ReactNode }> = ({ children }) => <>{children}</>
-
-// Remove deployButton from LayoutProps again
-export interface LayoutProps {
-  path: string;
-  children?: ReactNode;
-  title?: string;
-  description?: string;
-}
-
-export function getLayout<LP extends {}>(
-  Component: ComponentType<any>
-): ComponentType<LP> {
-  return (Component as any).Layout || Noop
-}

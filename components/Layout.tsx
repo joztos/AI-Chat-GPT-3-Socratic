@@ -19,7 +19,7 @@ const Layout: FC<LayoutProps> = ({
       <div className="px-8 bg-accents-0">{children}</div>
 
       <footer className="py-10 w-full mt-auto border-t flex items-center justify-center bg-accents-1 z-20">
-        <span className="text-primary">Created by Samasat Group for <strong>EMDI</strong> school, 
+        <span className="text-primary">Created by Samasat Group for <strong>EMDI</strong> school 
         </span>
         <a
           href="https://www.emdischool.com/"

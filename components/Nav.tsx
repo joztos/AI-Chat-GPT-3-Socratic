@@ -50,22 +50,13 @@ export default function Nav({ path }: NavProps) {
             </li>
           </ul>
         </div>
-        <div className="flex-1 justify-end hidden md:flex">
-          <nav className="flex-row inline-flex items-center">
-            <span className="ml-2 h-full flex items-center cursor-not-allowed text-accents-5">
-              <Link href="https://github.com/Your-Repository" target="_blank" rel="noreferrer">
-                <Image
-                  src="https://i.im.ge/2023/04/11/IBXuyY.EMDILOGO.png"  // specify the correct path to your logo here
-                  alt="Your logo"
-                  width={32}
-                  height={32}
-                />
-              </Link>
-            </span>
-            <span className="ml-2 h-full flex items-center cursor-not-allowed text-accents-5">
-              {/* You can customize this part based on your needs */}
-            </span>
-          </nav>
+        <div className="flex items-center">
+          <Image
+            src="/vercelLogo.png"  // path to your local Vercel logo image
+            alt="Vercel Logo"
+            width={32}
+            height={32}
+          />
         </div>
       </div>
     </nav>

@@ -13,7 +13,6 @@ const Layout: FC<LayoutProps> = ({
   title,
   description,
   path,
-  deployButton,
   children,
 }) => {
   return (

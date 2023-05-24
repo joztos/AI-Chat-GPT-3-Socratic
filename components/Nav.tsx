@@ -8,11 +8,11 @@ export interface NavProps {
 
 export default function Nav({ path }: NavProps) {
   const displayPath = path.split('/').filter(Boolean).join(' / ');
-  const repositoryUrl = `https://github.com/Your-Repository/${path}`;
+  const repositoryUrl = `https://samasat.com/${path}`;
 
   return (
     <nav className="border-b border-gray-200 py-5 relative z-20 bg-background shadow-[0_0_15px_0_rgb(0,0,0,0.1)]">
-      <div className="flex items-center lg:px-6 px-8 mx-auto max-w-7xl px-14">
+      <div className="flex items-center lg:px-6 px-8 mx-auto max-w-7xl px-14 justify-between">
         <div className="flex flex-row items-center">
           <Link href="https://www.emdischool.com/">
             <Image

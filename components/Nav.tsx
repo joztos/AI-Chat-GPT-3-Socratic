@@ -17,8 +17,8 @@ export default function Nav({ path }: NavProps) {
             <Image
               src="/EMDILOGO.png"
               alt="Logo of EMDI School"
-              width={32}
-              height={32}
+              width={120}
+              height={48}
             />
           </Link>
         </div>

@@ -53,15 +53,14 @@ export default function Nav({ path }: NavProps) {
         <div className="flex-1 justify-end hidden md:flex">
           <nav className="flex-row inline-flex items-center">
             <span className="ml-2 h-full flex items-center cursor-not-allowed text-accents-5">
-              <Button
-                variant="ghost"
-                Component="a"
-                href="https://github.com/Your-Repository"
-                target="_blank"
-                rel="noreferrer"
-              >
-                More Examples →
-              </Button>
+              <Link href="https://github.com/Your-Repository" target="_blank" rel="noreferrer">
+                <Image
+                  src="/path-to-your-logo/vercelLogo.png"  // specify the correct path to your logo here
+                  alt="Your logo"
+                  width={32}
+                  height={32}
+                />
+              </Link>
             </span>
             <span className="ml-2 h-full flex items-center cursor-not-allowed text-accents-5">
               {/* You can customize this part based on your needs */}

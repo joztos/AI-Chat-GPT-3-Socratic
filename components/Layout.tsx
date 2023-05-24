@@ -23,7 +23,7 @@ const Layout: FC<LayoutProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Nav path={path} deployButton={deployButton} />
+      <Nav path={path} />
 
       <div className="px-8 bg-accents-0">{children}</div>
 

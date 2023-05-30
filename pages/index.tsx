@@ -5,9 +5,9 @@ function Home() {
   return (
     <Page className="flex flex-col gap-12">
       <section className="flex flex-col gap-6">
-        <Text variant="h1">Navi Tutor Socratico</Text>
+        <Text variant="h1">Socratic Navi Tutor</Text>
         <Text className="text-zinc-600">
-          Libera tu genio interno.
+        Release your inner genius.
         </Text>
       </section>
 

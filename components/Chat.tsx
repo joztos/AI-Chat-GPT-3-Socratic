@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { Button } from './Button';
 import { Message, ChatLine, LoadingChatLine } from './ChatLine';
 import { useCookies } from 'react-cookie';
@@ -6,7 +6,6 @@ import annyang from 'annyang';
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3-steamship';
 
-// default first message to display in UI (not necessary to define the prompt)
 export const initialMessages: Message[] = [
   {
     who: 'bot',
@@ -14,7 +13,15 @@ export const initialMessages: Message[] = [
   },
 ];
 
-const InputMessage = ({ input, setInput, sendMessage, startListening, stopListening }) => (
+type InputMessageProps = {
+  input: string;
+  setInput: Dispatch<SetStateAction<string>>;
+  sendMessage: (message: string) => void;
+  startListening: () => void;
+  stopListening: () => void;
+};
+
+const InputMessage: React.FC<InputMessageProps> = ({ input, setInput, sendMessage, startListening, stopListening }) => (
   <div className="mt-6 flex clear-both">
     <input
       type="text"
@@ -45,24 +52,23 @@ export function Chat() {
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
-      // generate a semi random short id
-      const randomId = Math.random().toString(36).substring(7)
-      setCookie(COOKIE_NAME, randomId)
+      const randomId = Math.random().toString(36).substring(7);
+      setCookie(COOKIE_NAME, randomId);
     }
     
-    if(annyang) {
+    if (annyang) {
       annyang.addCallback('result', function(phrases: string[]) {
         setInput(phrases[0]);
       });
-  
+
       annyang.addCallback('start', function() {
         console.log("Listening started");
       });
-  
+
       annyang.addCallback('end', function() {
         console.log("Listening ended");
       });
-  
+
       annyang.addCallback('error', function() {
         console.error("There was an error with annyang speech recognition.");
       });
@@ -138,6 +144,7 @@ export function Chat() {
           Write a question to start the conversation..
         </span>
       )}
+
       <InputMessage
         input={input}
         setInput={setInput}

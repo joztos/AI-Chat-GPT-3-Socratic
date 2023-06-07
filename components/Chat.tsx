@@ -44,21 +44,47 @@ export function Chat() {
   const [error, setError] = useState<String | undefined>(undefined);
 
   useEffect(() => {
-    // ... the rest of your useEffect hook
+    if (!cookie[COOKIE_NAME]) {
+      // generate a semi random short id
+      const randomId = Math.random().toString(36).substring(7)
+      setCookie(COOKIE_NAME, randomId)
+    }
+    
+    if(annyang) {
+      annyang.addCallback('result', function(phrases: string[]) {
+        setInput(phrases[0]);
+      });
+  
+      annyang.addCallback('start', function() {
+        console.log("Listening started");
+      });
+  
+      annyang.addCallback('end', function() {
+        console.log("Listening ended");
+      });
+  
+      annyang.addCallback('error', function() {
+        console.error("There was an error with annyang speech recognition.");
+      });
+    }
   }, [cookie, setCookie]);
 
   const startListening = () => {
-    // ... your implementation of startListening
+    if (annyang) {
+      annyang.start();
+    }
   };
 
   const stopListening = () => {
-    // ... your implementation of stopListening
+    if (annyang) {
+      annyang.abort();
+    }
   };
 
-  const sendMessage = async (message) => {
+  const sendMessage = async (message: string) => {
     setLoading(true);
     try {
-      const response = await fetch('/api/handler', {   // Update with your API route
+      const response = await fetch('/api/handler', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +97,7 @@ export function Chat() {
       }
 
       const { taskId, workspace } = await response.json();
-      const taskResponse = await fetch('/api/getTask', {  // Update with your API route
+      const taskResponse = await fetch('/api/getTask', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -125,7 +151,9 @@ export function Chat() {
             <div className="flex">
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">Error</h3>
-                <p>{error}</p>
+                <div className="text-sm text-red-700">
+                  <p>{error}</p>
+                </div>
               </div>
             </div>
           </div>

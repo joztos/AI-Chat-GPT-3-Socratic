@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Button } from './Button'
 import { type Message, ChatLine, LoadingChatLine } from './ChatLine'
 import { useCookies } from 'react-cookie'
@@ -13,8 +13,39 @@ export const initialMessages: Message[] = [
   },
 ];
 
+const useSpeechRecognition = (setInput) => {
+  const recognition = useRef(null);
 
-const InputMessage = ({ input, setInput, sendMessage }: any) => (
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window) {
+      recognition.current = new window.webkitSpeechRecognition();
+      recognition.current.interimResults = true;
+      recognition.current.onresult = (event) => {
+        const last = event.results.length - 1;
+        const transcript = event.results[last][0].transcript;
+        setInput(transcript);
+      };
+    } else {
+      console.warn('El navegador no soporta la API SpeechRecognition');
+    }
+  }, [setInput]);
+
+  const start = () => {
+    if (recognition.current) {
+      recognition.current.start();
+    }
+  };
+
+  const stop = () => {
+    if (recognition.current) {
+      recognition.current.stop();
+    }
+  };
+
+  return { start, stop };
+};
+
+const InputMessage = ({ input, setInput, sendMessage, start, stop }: any) => (
   <div className="mt-6 flex clear-both">
     <input
       type="text"
@@ -32,6 +63,20 @@ const InputMessage = ({ input, setInput, sendMessage }: any) => (
         setInput(e.target.value)
       }}
     />
+    <Button
+      type="button"
+      className="ml-4 flex-none"
+      onClick={start}
+    >
+      Iniciar grabación
+    </Button>
+    <Button
+      type="button"
+      className="ml-4 flex-none"
+      onClick={stop}
+    >
+      Detener grabación
+    </Button>
     <Button
       type="submit"
       className="ml-4 flex-none"
@@ -51,6 +96,7 @@ export function Chat() {
   const [loading, setLoading] = useState(false)
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [error, setError] = useState<String | undefined>(undefined);
+  const { start, stop } = useSpeechRecognition(setInput);
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
@@ -91,7 +137,6 @@ export function Chat() {
         pollMessage(taskId, workspace)
       }, 300);
     }
-
   }
 
   // send message to API /api/chat endpoint
@@ -149,6 +194,8 @@ export function Chat() {
         input={input}
         setInput={setInput}
         sendMessage={sendMessage}
+        start={start}
+        stop={stop}
       />
 
       { error && (

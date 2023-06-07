@@ -49,19 +49,21 @@ export function Chat() {
   const [cookie, setCookie] = useCookies([COOKIE_NAME]);
   const [error, setError] = useState<String | undefined>(undefined);
   
-  let recognition: typeof window.SpeechRecognition | typeof window.webkitSpeechRecognition | undefined;
+  let recognition: SpeechRecognition | webkitSpeechRecognition | undefined;
 
   useEffect(() => {
+
     if (!cookie[COOKIE_NAME]) {
       const randomId = Math.random().toString(36).substring(7);
       setCookie(COOKIE_NAME, randomId);
     }
     
     if ('SpeechRecognition' in window) {
-      recognition = new window.SpeechRecognition();
+      recognition = new (window as any).SpeechRecognition();
     } else if ('webkitSpeechRecognition' in window) {
-      recognition = new window.webkitSpeechRecognition();
+      recognition = new (window as any).webkitSpeechRecognition();
     }
+
     if (recognition) {
       recognition.continuous = true;
       recognition.interimResults = false;
@@ -85,7 +87,7 @@ export function Chat() {
       };
     }
 
-  }, [cookie, setCookie]);
+}, [cookie, setCookie]);
 
   const startListening = () => {
     if (recognition) {

@@ -16,7 +16,7 @@ export const initialMessages: Message[] = [
 type InputMessageProps = {
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
-  sendMessage: (message: string) => void;
+  sendMessage: (message: string) => Promise<void>;
   startListening: () => void;
   stopListening: () => void;
 };
@@ -123,7 +123,7 @@ export function Chat() {
       } else {
         setError("Task is not yet complete. Please try again later.");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Fetch error:', error);
       setError(error.message);
     } finally {

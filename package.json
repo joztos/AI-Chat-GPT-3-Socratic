@@ -13,6 +13,7 @@
     "@steamship/steamship-nextjs": "^1.0.3",
     "@vercel/analytics": "^0.1.11",
     "@vercel/examples-ui": "^1.0.5",
+    "annyang": "^2.6.1",
     "next": "^13.1.6",
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",

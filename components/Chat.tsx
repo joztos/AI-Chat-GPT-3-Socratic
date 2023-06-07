@@ -73,10 +73,10 @@ export function Chat() {
       setCookie(COOKIE_NAME, randomId)
     }
     
-    if (annyang) {
-      annyang.addCallback('result', function(phrases) {
-        setInput(phrases[0]);
-      });
+    annyang.addCallback('result', function(phrases: string[]) {
+      setInput(phrases[0]);
+    });
+    
 
       annyang.addCallback('start', function() {
         console.log("Listening started");

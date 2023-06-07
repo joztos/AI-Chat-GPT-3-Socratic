@@ -49,7 +49,7 @@ export function Chat() {
   const [cookie, setCookie] = useCookies([COOKIE_NAME]);
   const [error, setError] = useState<String | undefined>(undefined);
   
-  let recognition: SpeechRecognition | undefined;
+  let recognition: typeof window.SpeechRecognition | typeof window.webkitSpeechRecognition | undefined;
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
@@ -57,29 +57,34 @@ export function Chat() {
       setCookie(COOKIE_NAME, randomId);
     }
     
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    if ('SpeechRecognition' in window) {
+      recognition = new window.SpeechRecognition();
+    } else if ('webkitSpeechRecognition' in window) {
+      recognition = new window.webkitSpeechRecognition();
+    }
+    if (recognition) {
       recognition.continuous = true;
       recognition.interimResults = false;
       recognition.lang = 'en-US';
-
+  
       recognition.onresult = function(event) {
         const transcript = event.results[event.resultIndex][0].transcript;
         setInput(transcript);
       };
-
+  
       recognition.onerror = function(event) {
         console.error("There was an error with speech recognition: ", event.error);
       };
-
+  
       recognition.onstart = function() {
         console.log("Speech recognition started");
       };
-
+  
       recognition.onend = function() {
         console.log("Speech recognition ended");
       };
     }
+
   }, [cookie, setCookie]);
 
   const startListening = () => {

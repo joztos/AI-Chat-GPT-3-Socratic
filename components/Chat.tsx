@@ -1,4 +1,4 @@
-import { useEffect, useState, Dispatch, SetStateAction } from 'react';
+import { useEffect, useState, Dispatch, SetStateAction, useRef } from 'react';
 import { Button } from './Button';
 import { Message, ChatLine, LoadingChatLine } from './ChatLine';
 import { useCookies } from 'react-cookie';
@@ -49,7 +49,7 @@ export function Chat() {
   const [cookie, setCookie] = useCookies([COOKIE_NAME]);
   const [error, setError] = useState<String | undefined>(undefined);
   
-  let recognition: SpeechRecognition | webkitSpeechRecognition | undefined;
+  const recognition = useRef<SpeechRecognition | typeof window.webkitSpeechRecognition | null>(null);
 
   useEffect(() => {
 
@@ -59,30 +59,30 @@ export function Chat() {
     }
     
     if ('SpeechRecognition' in window) {
-      recognition = new (window as any).SpeechRecognition();
+      recognition.current = new window.SpeechRecognition();
     } else if ('webkitSpeechRecognition' in window) {
-      recognition = new (window as any).webkitSpeechRecognition();
+      recognition.current = new window.webkitSpeechRecognition();
     }
 
-    if (recognition) {
-      recognition.continuous = true;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
+    if (recognition.current) {
+      recognition.current.continuous = true;
+      recognition.current.interimResults = false;
+      recognition.current.lang = 'en-US';
   
-      recognition.onresult = function(event) {
+      recognition.current.onresult = function(event) {
         const transcript = event.results[event.resultIndex][0].transcript;
         setInput(transcript);
       };
   
-      recognition.onerror = function(event) {
+      recognition.current.onerror = function(event) {
         console.error("There was an error with speech recognition: ", event.error);
       };
   
-      recognition.onstart = function() {
+      recognition.current.onstart = function() {
         console.log("Speech recognition started");
       };
   
-      recognition.onend = function() {
+      recognition.current.onend = function() {
         console.log("Speech recognition ended");
       };
     }
@@ -90,15 +90,11 @@ export function Chat() {
 }, [cookie, setCookie]);
 
   const startListening = () => {
-    if (recognition) {
-      recognition.start();
-    }
+    recognition.current && recognition.current.start();
   };
 
   const stopListening = () => {
-    if (recognition) {
-      recognition.stop();
-    }
+    recognition.current && recognition.current.stop();
   };
 
   const sendMessage = async (message: string) => {

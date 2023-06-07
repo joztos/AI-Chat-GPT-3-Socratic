@@ -2,7 +2,6 @@ import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { Button } from './Button';
 import { Message, ChatLine, LoadingChatLine } from './ChatLine';
 import { useCookies } from 'react-cookie';
-import annyang from 'annyang';
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3-steamship';
 
@@ -49,6 +48,8 @@ export function Chat() {
   const [loading, setLoading] = useState(false);
   const [cookie, setCookie] = useCookies([COOKIE_NAME]);
   const [error, setError] = useState<String | undefined>(undefined);
+  
+  let recognition: SpeechRecognition | undefined;
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
@@ -56,34 +57,40 @@ export function Chat() {
       setCookie(COOKIE_NAME, randomId);
     }
     
-    if (annyang) {
-      annyang.addCallback('result', function(phrases: string[]) {
-        setInput(phrases[0]);
-      });
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
 
-      annyang.addCallback('start', function() {
-        console.log("Listening started");
-      });
+      recognition.onresult = function(event) {
+        const transcript = event.results[event.resultIndex][0].transcript;
+        setInput(transcript);
+      };
 
-      annyang.addCallback('end', function() {
-        console.log("Listening ended");
-      });
+      recognition.onerror = function(event) {
+        console.error("There was an error with speech recognition: ", event.error);
+      };
 
-      annyang.addCallback('error', function() {
-        console.error("There was an error with annyang speech recognition.");
-      });
+      recognition.onstart = function() {
+        console.log("Speech recognition started");
+      };
+
+      recognition.onend = function() {
+        console.log("Speech recognition ended");
+      };
     }
   }, [cookie, setCookie]);
 
   const startListening = () => {
-    if (annyang) {
-      annyang.start();
+    if (recognition) {
+      recognition.start();
     }
   };
 
   const stopListening = () => {
-    if (annyang) {
-      annyang.abort();
+    if (recognition) {
+      recognition.stop();
     }
   };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from './Button';
-import { type Message, ChatLine, LoadingChatLine } from './ChatLine';
+import { Message, ChatLine, LoadingChatLine } from './ChatLine';
 import { useCookies } from 'react-cookie';
 import annyang from 'annyang';
 
@@ -15,7 +15,25 @@ export const initialMessages: Message[] = [
 ];
 
 const InputMessage = ({ input, setInput, sendMessage, startListening, stopListening }) => (
-  // ... the rest of your InputMessage component
+  <div className="mt-6 flex clear-both">
+    <input
+      type="text"
+      aria-label="chat input"
+      required
+      className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 sm:text-sm"
+      value={input}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          sendMessage(input);
+          setInput('');
+        }
+      }}
+      onChange={(e) => setInput(e.target.value)}
+    />
+    <Button className="ml-4 flex-none" onClick={() => { sendMessage(input); setInput(''); }}>Send</Button>
+    <Button className="ml-4 flex-none" onClick={startListening}>Start Listening</Button>
+    <Button className="ml-4 flex-none" onClick={stopListening}>Stop Listening</Button>
+  </div>
 );
 
 export function Chat() {

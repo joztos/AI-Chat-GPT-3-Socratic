@@ -1,19 +1,12 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from './Button'
-import { Message, ChatLine, LoadingChatLine } from './ChatLine'
+import { type Message, ChatLine, LoadingChatLine } from './ChatLine'
 import { useCookies } from 'react-cookie'
-import annyang from 'annyang';
-
-type InputMessageProps = {
-  input: string;
-  setInput: React.Dispatch<React.SetStateAction<string>>;
-  sendMessage: (message: string) => Promise<void>;
-  start: () => void;
-  stop: () => void;
-};
+import annyang from 'annyang'
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3-steamship'
 
+// default first message to display in UI (not necessary to define the prompt)
 export const initialMessages: Message[] = [
   {
     who: 'bot',
@@ -21,7 +14,7 @@ export const initialMessages: Message[] = [
   },
 ];
 
-const InputMessage = ({ input, setInput, sendMessage, start, stop }: InputMessageProps) => (
+const InputMessage = ({ input, setInput, sendMessage, startListening, stopListening }: any) => (
   <div className="mt-6 flex clear-both">
     <input
       type="text"
@@ -52,16 +45,16 @@ const InputMessage = ({ input, setInput, sendMessage, start, stop }: InputMessag
     <Button
       type="button"
       className="ml-4 flex-none"
-      onClick={start}
+      onClick={startListening}
     >
-      Start
+      Start Listening
     </Button>
     <Button
       type="button"
       className="ml-4 flex-none"
-      onClick={stop}
+      onClick={stopListening}
     >
-      Stop
+      Stop Listening
     </Button>
   </div>
 )
@@ -72,50 +65,78 @@ export function Chat() {
   const [loading, setLoading] = useState(false)
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [error, setError] = useState<String | undefined>(undefined);
-  const [listening, setListening] = useState(false)
 
   useEffect(() => {
-    const cookieValue = cookie[COOKIE_NAME];
-    if (!cookieValue) {
+    if (!cookie[COOKIE_NAME]) {
       // generate a semi random short id
       const randomId = Math.random().toString(36).substring(7)
       setCookie(COOKIE_NAME, randomId)
     }
-
-    // Voice to text conversion
+    
     if (annyang) {
       annyang.addCallback('result', function(phrases) {
         setInput(phrases[0]);
       });
 
       annyang.addCallback('start', function() {
-        setListening(true);
+        console.log("Listening started");
       });
 
       annyang.addCallback('end', function() {
-        setListening(false);
+        console.log("Listening ended");
       });
 
       annyang.addCallback('error', function() {
         console.error("There was an error with annyang speech recognition.");
       });
     }
+  }, [cookie, setCookie])
 
-  }, [])
-
-  const start = () => {
+  const startListening = () => {
     if (annyang) {
       annyang.start();
     }
   }
 
-  const stop = () => {
+  const stopListening = () => {
     if (annyang) {
       annyang.abort();
     }
   }
 
-  // Rest of your code...
-  // ...
+  // Rest of your component implementation...
 
+  return (
+    <div className="rounded-2xl border-zinc-100  lg:border lg:p-6">
+      {messages.map(({ message, who }, index) => (
+        <ChatLine key={index} who={who} message={message} />
+      ))}
+
+      {loading && <LoadingChatLine />}
+
+      {messages.length < 2 && (
+        <span className="mx-auto flex flex-grow text-gray-600 clear-both">
+          Write a question to start the conversation..
+        </span>
+      )}
+      <InputMessage
+        input={input}
+        setInput={setInput}
+        sendMessage={sendMessage}
+        startListening={startListening}
+        stopListening={stopListening}
+      />
+
+      { error && (
+          <div className="rounded-md bg-red-50 p-4">
+            <div className="flex">
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">Error</h3>
+                <p>{error}</p>
+              </div>
+            </div>
+          </div>
+      )}
+    </div>
+  )
 }

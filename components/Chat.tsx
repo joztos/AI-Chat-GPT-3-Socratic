@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
-import { Button } from './Button'
-import { type Message, ChatLine, LoadingChatLine } from './ChatLine'
-import { useCookies } from 'react-cookie'
-import annyang from 'annyang'
+import { useEffect, useState } from 'react';
+import { Button } from './Button';
+import { type Message, ChatLine, LoadingChatLine } from './ChatLine';
+import { useCookies } from 'react-cookie';
+import annyang from 'annyang';
 
-const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3-steamship'
+const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3-steamship';
 
 // default first message to display in UI (not necessary to define the prompt)
 export const initialMessages: Message[] = [
@@ -14,97 +14,72 @@ export const initialMessages: Message[] = [
   },
 ];
 
-const InputMessage = ({ input, setInput, sendMessage, startListening, stopListening }: any) => (
-  <div className="mt-6 flex clear-both">
-    <input
-      type="text"
-      aria-label="chat input"
-      required
-      className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 sm:text-sm"
-      value={input}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter') {
-          sendMessage(input)
-          setInput('')
-        }
-      }}
-      onChange={(e) => {
-        setInput(e.target.value)
-      }}
-    />
-    <Button
-      type="submit"
-      className="ml-4 flex-none"
-      onClick={() => {
-        sendMessage(input)
-        setInput('')
-      }}
-    >
-      Enviar
-    </Button>
-    <Button
-      type="button"
-      className="ml-4 flex-none"
-      onClick={startListening}
-    >
-      Start Listening
-    </Button>
-    <Button
-      type="button"
-      className="ml-4 flex-none"
-      onClick={stopListening}
-    >
-      Stop Listening
-    </Button>
-  </div>
-)
+const InputMessage = ({ input, setInput, sendMessage, startListening, stopListening }) => (
+  // ... the rest of your InputMessage component
+);
 
 export function Chat() {
-  const [messages, setMessages] = useState<Message[]>(initialMessages)
-  const [input, setInput] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [cookie, setCookie] = useCookies([COOKIE_NAME])
+  const [messages, setMessages] = useState<Message[]>(initialMessages);
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [cookie, setCookie] = useCookies([COOKIE_NAME]);
   const [error, setError] = useState<String | undefined>(undefined);
 
   useEffect(() => {
-    if (!cookie[COOKIE_NAME]) {
-      // generate a semi random short id
-      const randomId = Math.random().toString(36).substring(7)
-      setCookie(COOKIE_NAME, randomId)
-    }
-    
-    annyang.addCallback('result', function(phrases: string[]) {
-      setInput(phrases[0]);
-    });
-    
-
-      annyang.addCallback('start', function() {
-        console.log("Listening started");
-      });
-
-      annyang.addCallback('end', function() {
-        console.log("Listening ended");
-      });
-
-      annyang.addCallback('error', function() {
-        console.error("There was an error with annyang speech recognition.");
-      });
-    }
-  }, [cookie, setCookie])
+    // ... the rest of your useEffect hook
+  }, [cookie, setCookie]);
 
   const startListening = () => {
-    if (annyang) {
-      annyang.start();
-    }
-  }
+    // ... your implementation of startListening
+  };
 
   const stopListening = () => {
-    if (annyang) {
-      annyang.abort();
-    }
-  }
+    // ... your implementation of stopListening
+  };
 
-  // Rest of your component implementation...
+  const sendMessage = async (message) => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/handler', {   // Update with your API route
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: [{ message: message, who: 'user' }] }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const { taskId, workspace } = await response.json();
+      const taskResponse = await fetch('/api/getTask', {  // Update with your API route
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ taskId, workspace }),
+      });
+
+      if (!taskResponse.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const task = await taskResponse.json();
+
+      if (task.status === 'completed') {
+        const botMessage = task.result;
+        setMessages((prevMessages) => [...prevMessages, { message: botMessage, who: 'bot' }]);
+      } else {
+        setError("Task is not yet complete. Please try again later.");
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="rounded-2xl border-zinc-100  lg:border lg:p-6">
@@ -138,5 +113,5 @@ export function Chat() {
           </div>
       )}
     </div>
-  )
+  );
 }

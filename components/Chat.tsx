@@ -1,7 +1,15 @@
 import { useEffect, useState, useRef } from 'react'
 import { Button } from './Button'
-import { type Message, ChatLine, LoadingChatLine } from './ChatLine'
+import { Message, ChatLine, LoadingChatLine } from './ChatLine'
 import { useCookies } from 'react-cookie'
+
+type InputMessageProps = {
+  input: string;
+  setInput: React.Dispatch<React.SetStateAction<string>>;
+  sendMessage: (message: string) => Promise<void>;
+  start: () => void;
+  stop: () => void;
+};
 
 const COOKIE_NAME = 'nextjs-example-ai-chat-gpt3-steamship'
 
@@ -13,39 +21,7 @@ export const initialMessages: Message[] = [
   },
 ];
 
-const useSpeechRecognition = (setInput) => {
-  const recognition = useRef(null);
-
-  useEffect(() => {
-    if ('webkitSpeechRecognition' in window) {
-      recognition.current = new window.webkitSpeechRecognition();
-      recognition.current.interimResults = true;
-      recognition.current.onresult = (event) => {
-        const last = event.results.length - 1;
-        const transcript = event.results[last][0].transcript;
-        setInput(transcript);
-      };
-    } else {
-      console.warn('El navegador no soporta la API SpeechRecognition');
-    }
-  }, [setInput]);
-
-  const start = () => {
-    if (recognition.current) {
-      recognition.current.start();
-    }
-  };
-
-  const stop = () => {
-    if (recognition.current) {
-      recognition.current.stop();
-    }
-  };
-
-  return { start, stop };
-};
-
-const InputMessage = ({ input, setInput, sendMessage, start, stop }: any) => (
+const InputMessage = ({ input, setInput, sendMessage, start, stop }: InputMessageProps) => (
   <div className="mt-6 flex clear-both">
     <input
       type="text"
@@ -64,20 +40,6 @@ const InputMessage = ({ input, setInput, sendMessage, start, stop }: any) => (
       }}
     />
     <Button
-      type="button"
-      className="ml-4 flex-none"
-      onClick={start}
-    >
-      Iniciar grabación
-    </Button>
-    <Button
-      type="button"
-      className="ml-4 flex-none"
-      onClick={stop}
-    >
-      Detener grabación
-    </Button>
-    <Button
       type="submit"
       className="ml-4 flex-none"
       onClick={() => {
@@ -86,6 +48,20 @@ const InputMessage = ({ input, setInput, sendMessage, start, stop }: any) => (
       }}
     >
       Enviar
+    </Button>
+    <Button
+      type="button"
+      className="ml-4 flex-none"
+      onClick={start}
+    >
+      Start
+    </Button>
+    <Button
+      type="button"
+      className="ml-4 flex-none"
+      onClick={stop}
+    >
+      Stop
     </Button>
   </div>
 )
@@ -96,7 +72,8 @@ export function Chat() {
   const [loading, setLoading] = useState(false)
   const [cookie, setCookie] = useCookies([COOKIE_NAME])
   const [error, setError] = useState<String | undefined>(undefined);
-  const { start, stop } = useSpeechRecognition(setInput);
+  const [listening, setListening] = useState(false)
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   useEffect(() => {
     if (!cookie[COOKIE_NAME]) {
@@ -104,7 +81,48 @@ export function Chat() {
       const randomId = Math.random().toString(36).substring(7)
       setCookie(COOKIE_NAME, randomId)
     }
+
+    // Voice to text conversion
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)()
+    recognition.lang = 'es-ES';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognitionRef.current = recognition;
+
+    recognition.onresult = (event) => {
+      const last = event.results.length - 1;
+      const text = event.results[last][0].transcript;
+      setInput(text);
+    }
+
+    recognition.onspeechend = () => {
+      setListening(false);
+      recognition.stop();
+    }
+
+    recognition.onerror = (event) => {
+      console.error(event.error);
+    }
+
+    recognition.onaudiostart = () => {
+      setListening(true);
+    }
+
   }, [cookie, setCookie])
+
+  const start = () => {
+    if (recognitionRef.current) {
+      setListening(true);
+      recognitionRef.current.start();
+    }
+  }
+
+  const stop = () => {
+    if (recognitionRef.current) {
+      setListening(false);
+      recognitionRef.current.stop();
+    }
+  }
 
   const pollMessage = async (taskId: string, workspace: string) => {
     console.log("Polling", taskId, workspace)
@@ -137,6 +155,7 @@ export function Chat() {
         pollMessage(taskId, workspace)
       }, 300);
     }
+
   }
 
   // send message to API /api/chat endpoint
